@@ -5,6 +5,8 @@ var session = require('express-session');
 var passport = require( 'passport' );
 var app = express();
 
+const PORT = process.env.PORT || 3000;
+
 //configurations
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -32,6 +34,6 @@ app.use(function(req, res){
 var requestHandler = require('./app/routes/global-routes.js');
 app.use('/', requestHandler);
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(PORT, () => {
     console.log(`Our app is running on port ${ PORT }`);
 });
