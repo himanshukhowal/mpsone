@@ -32,4 +32,4 @@ app.use(function(req, res){
 var requestHandler = require('./app/routes/global-routes.js');
 app.use('/', requestHandler);
 
-app.listen(3000);
+app.listen(8080);
