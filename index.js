@@ -32,4 +32,6 @@ app.use(function(req, res){
 var requestHandler = require('./app/routes/global-routes.js');
 app.use('/', requestHandler);
 
-app.listen(8080);
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
