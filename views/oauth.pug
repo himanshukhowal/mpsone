@@ -1,0 +1,25 @@
+extends index.pug
+
+block content
+    .row(style="margin-top: 110px;")
+        .col-md-4
+        .col-md-4
+            .alert.alert-light.text-center
+                img(src=oauthView.imageUrl)
+                p.mt-2 You're being redirected to #{oauthView.application} for Login
+                div(class='spinner-grow text-success mt-2', role='status', style="width: 1rem;height: 1rem;")
+                    span.sr-only Loading...
+                div(class='spinner-grow text-danger mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                    span.sr-only Loading...
+                div(class='spinner-grow text-warning mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                    span.sr-only Loading...
+                div(class='spinner-grow text-info mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                    span.sr-only Loading...
+                input(type='hidden', value=oauthView.loginUrl, id='loginUrl')
+        .col-md-4
+
+block pagescripts
+    script.
+        $( document ).ready(function() {
+            setTimeout(function(){ window.location.href = $('#loginUrl').val() }, 3000);
+        });

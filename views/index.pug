@@ -1,0 +1,14 @@
+doctype html
+html
+    head
+        title #{oauthView.title}
+        block scripts
+            script(src='/staticFiles/js/jquery.min.js')
+            link(rel='stylesheet', href='/staticFiles/css/bootstrap.min.css')
+            script(src='/staticFiles/js/bootstrap.min.js')
+    body
+        block header
+        .container
+            block content
+        block foot
+        block pagescripts

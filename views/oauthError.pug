@@ -1,0 +1,33 @@
+extends index.pug
+
+block content
+    .row(style="margin-top: 110px;")
+        .col-md-4
+        .col-md-4
+            .alert.alert-light.text-center
+                img(src=oauthView.imageUrl)
+                .mt-2
+                    p
+                        ul
+                            each errors in oauthView.message
+                                li.text-left  #{errors}
+                    p You will now be directed back to the system website.
+                    .alert.alert-secondary
+                        small
+                            i Please contact site administrator if this happens again.
+                    div(class='spinner-grow text-success mt-2', role='status', style="width: 1rem;height: 1rem;")
+                        span.sr-only Loading...
+                    div(class='spinner-grow text-danger mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                        span.sr-only Loading...
+                    div(class='spinner-grow text-warning mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                        span.sr-only Loading...
+                    div(class='spinner-grow text-info mt-2 ml-1', role='status', style="width: 1rem;height: 1rem;")
+                        span.sr-only Loading...
+                input(type='hidden', value=oauthView.redirectUrl, id='redirectUrl', name='redirectUrl')
+        .col-md-4
+
+block pagescripts
+    script.
+        $( document ).ready(function() {
+            //setTimeout(function(){ window.location.href = $('#redirectUrl').val(); }, 5000);
+        });
