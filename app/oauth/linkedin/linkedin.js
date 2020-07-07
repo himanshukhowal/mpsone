@@ -76,6 +76,7 @@ router.get('/fetchData/:accessToken', (req, res) =>{
         
         getEmail(accessToken, (emailData) => {
             payload.email = emailData;
+            oauthView.firstName = payload.profile.firstName.localized.en_US;
             var token = jwt.create(payload, 'MPSLIMITED');
             token.setExpiration(new Date().getTime() + 60*1000);
             oauthView.redirectUrl = req.session.redirectUrl;

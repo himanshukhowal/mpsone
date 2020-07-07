@@ -38,6 +38,10 @@ router.use('/login', (req, res) => {
     }
 });
 
+router.get('/loginPage', function(req, res){
+    res.render('login', {oauthView: oauthView});
+});
+
 router.get('/login', function(req, res){
     oauthView.loginUrl =  oauthUrls.authorization + '?client_id=' + oauthAppCredentials.clientId + '&response_type=code&scope=/authenticate&redirect_uri=' + oauthAppCredentials.redirectUri;
     res.render('oauth', {oauthView: oauthView});
@@ -78,6 +82,7 @@ router.get('/fetchData/:accessToken/:orcidId', (req, res) => {
     }, (err, res, body) => {
         if (err) { return console.log(err); }
         var jsonBody = JSON.parse(body);
+        oauthView.firstName = jsonBody.person.name['given-names'].value;
         var token = jwt.create(jsonBody, 'MPSLIMITED');
         token.setExpiration(new Date().getTime() + 60*1000);
         console.log('- ' + req.session.redirectUrl);

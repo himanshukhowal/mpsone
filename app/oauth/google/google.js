@@ -69,6 +69,7 @@ router.get( '/loginDone',
 
 router.get('/fetchData', (req, res) =>{
   console.log(req.user._json);
+  oauthView.firstName = req.user.name.givenName;
   var token = jwt.create(req.user, 'MPSLIMITED');
   token.setExpiration(new Date().getTime() + 60*1000);
   console.log(req.session.mode + ' - ' + req.session.redirectUrl);
