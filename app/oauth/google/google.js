@@ -9,7 +9,7 @@ var utils = require('../../utils/oauthUtils.js');
 var oauthAppCredentials = {
   clientID: '108354687358-ve866bhms13ise8gqldj8k9iua4ihvpq.apps.googleusercontent.com',
   clientSecret: '6XnOepNTZAxYGfwALsFvG0W-',
-  callbackURL: 'http://localhost:3000/oauth/google/loginDone',
+  callbackURL: 'https://mpsone.herokuapp.com/oauth/google/loginDone',
   passReqToCallback: true
 }
 

@@ -8,7 +8,7 @@ var utils = require('../../utils/oauthUtils.js');
 var oauthAppCredentials = {
   clientID: '86frn9w5ow90lm',
   clientSecret: '4qJwMDsA8hc2oMKp',
-  callbackURL: 'http://localhost:3000/oauth/linkedin/loginDone',
+  callbackURL: 'https://mpsone.herokuapp.com/oauth/linkedin/loginDone',
   state: 'MPSLimited'
 }
 
