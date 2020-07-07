@@ -13,7 +13,7 @@ var oauthUrls = {
 var oauthAppCredentials = {
     clientId: 'APP-RXAOPPWL9UXCYNRM',
     clientSecret: '0ba62477-818d-4d60-bdfa-78c16921a95b',
-    redirectUri: 'http://localhost:3000/oauth/orcid/loginDone'
+    redirectUri: 'https://mpsone.herokuapp.com/oauth/orcid/loginDone'
 };
 
 var oauthView = {
