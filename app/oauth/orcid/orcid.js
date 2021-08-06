@@ -42,6 +42,10 @@ router.get('/loginPage', function(req, res){
     res.render('login', {oauthView: oauthView});
 });
 
+router.get('/etgLogin', function(req, res){
+    res.redirect('etgapp://');
+});
+
 router.get('/login', function(req, res){
     oauthView.loginUrl =  oauthUrls.authorization + '?client_id=' + oauthAppCredentials.clientId + '&response_type=code&scope=/authenticate&redirect_uri=' + oauthAppCredentials.redirectUri;
     res.render('oauth', {oauthView: oauthView});
