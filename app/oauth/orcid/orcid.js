@@ -43,7 +43,7 @@ router.get('/loginPage', function(req, res){
 });
 
 router.get('/etgLogin', function(req, res){
-    res.redirect('etgapp://');
+    res.redirect('etgapp://?code=CHECK-FROM-302-REDIRECT');
 });
 
 router.get('/login', function(req, res){
