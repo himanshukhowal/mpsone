@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/staticFiles/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/staticFiles/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/staticFiles/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/staticFiles/css/main.css">
+<link href="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/css/webdatarocks.min.css" rel="stylesheet">
+<script src="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/js/webdatarocks.toolbar.min.js"></script>
+<script src="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/js/webdatarocks.js"></script>
+<script src="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/js/webdatarocks.highcharts.js"></script>
+<script src="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/js/highcharts.js"></script>
+<script src="https://manuscript.scriptorszone.com/manuScriptSystem/webresources/js/highcharts-more.js"></script>
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('/staticFiles/images/bg-01.jpg');">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-49">
+						<span>Testing space</span>
+					</span>
+					<input type='file' onchange='openFile(event)'><br>
+					<div id='output'></div>
+					<button onclick="saveFile()">Save XLSX file</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/bootstrap/js/popper.js"></script>
+	<script src="/staticFiles/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/staticFiles/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/staticFiles/js/main.js"></script><script src="/staticFiles/js/notiflix-aio-2.3.1.min.js"></script><script src="/staticFiles/js/login.js"></script>
+	<script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+
+</body>
+<script>
+var common = [];
+var pivotData = {};
+var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          var text = reader.result.split(/[\r\n]+/);
+          var node = document.getElementById('output');
+          //node.innerText = text;
+		  //console.log(text);
+		  let count = 0;
+		  text.forEach((line) => {
+			evaluateLineData(line, (resp) => {
+				$('#output').html('Line evaluated = ' + ++count);
+			})
+		  });
+        };
+        reader.readAsText(input.files[0]);
+	  };
+	  
+function evaluateLineData(data, callback) {
+    pivotData = {};
+    if(data)
+    {
+        let splitted = data.split('"');
+        let first = splitted[0].split(' ')[0];
+        pivotData.ip = first;
+        let second = splitted[0].split(' ')[3] + ' ' + splitted[0].split(' ')[4];
+        pivotData.time = second;
+        let third = splitted[1];
+        pivotData.requestedResource = third;
+        let fourth = splitted[2].split(' ')[1];
+        pivotData.status = fourth;
+        let fifth = splitted[2].split(' ')[2];
+        pivotData.unknownNumber = fifth;
+        let sixth = splitted[3];
+        pivotData.referer = sixth;
+        let seventh = splitted[5];
+        pivotData.userAgent = seventh;
+        common.push(pivotData);
+        //console.log(common);
+    }
+    callback(true);
+}
+window.saveFile = function saveFile () {
+	var data1 = common;
+    var data2 = [{a:100,b:10},{a:200,b:20}];
+    var opts = [{sheetid:'One',header:true},{sheetid:'Two',header:false}];
+    var res = alasql('SELECT * INTO XLSX("restest344b.xlsx",?) FROM ?',
+					 [opts,[data1,data2]]);
+	common = [];
+}
+</script>
+</html>
