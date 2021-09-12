@@ -1,3 +1,5 @@
 form(action="/pivot/table/test", method="post", enctype="multipart/form-data")
     input(type="file", name="ufile" accept=".zip")
     input(type="submit", name="Upload")
+    p After upload, please allow Heroku server to process the file. The processing time is totally dependent on the size of Log file and number of rows available in it.
+    p Make sure the log file is zipped properly before uploading and the zip should not have more than one log file in it.

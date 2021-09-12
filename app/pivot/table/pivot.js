@@ -62,7 +62,12 @@ router.use('/test', (req, res) => {
                     console.log('file Path ::::' + newPathold + fileName);
                     
                     setTimeout(() => {
-                        res.send("File uploaded to: " + newPath);
+                        res.send("<p>The file has reached the server and is currently being processed.</p>" 
+                        + "<p>This can take upto 10 minutes to completely process the file and insert data into the database</p>"
+                        + "<br> please use these database credentials to view the logs <br>host: db4free.net<br>port: 3306<br>"
+                        + "user: hima123<br>"
+                        + "password: Qwer1234$<br>"
+                        + "database: testingprod");
                         var s = fs.createReadStream(newPathold + fileName)
                         .pipe(es.split())
                         .pipe(es.mapSync(function(line) {
@@ -105,27 +110,30 @@ router.use('/test', (req, res) => {
 
 function databaseInsertion(common, callback) {
     
-        con.query('DELETE FROM logs', (err, result) => {
+        con.query('DROP TABLE IF EXISTS logs_data', (err, result) => {
             if (err) throw err;
-            var sql = "INSERT INTO logs (ip, date, req_resource, code, unknown_number, referrer, user_agent) VALUES ?";
-            var values = [];
-            common.forEach((inner) => {
-                values.push([inner.ip, inner.time, inner.requestedResource, inner.status, inner.unknownNumber, inner.referer, inner.userAgent]);
-            });
+            con.query('CREATE TABLE logs_data (`ip` TEXT,`date` TEXT,`req_resource` TEXT,`code` TEXT,`unknown_number` TEXT,`referrer` TEXT,`user_agent` TEXT)', (err, result) => {
+                if (err) throw err;
+                var sql = "INSERT INTO logs_data (ip, date, req_resource, code, unknown_number, referrer, user_agent) VALUES ?";
+                var values = [];
+                common.forEach((inner) => {
+                    values.push([inner.ip, inner.time, inner.requestedResource, inner.status, inner.unknownNumber, inner.referer, inner.userAgent]);
+                });
 
-            var count1 = values.length;
-            var start = 0;
-            var end = 10001;
-            dbinsert(common, sql, values, start, end, count1, callback);
+                var count1 = values.length;
+                var start = 0;
+                var end = 10001;
+                dbinsert(common, sql, values, start, end, count1, callback);
+            });
         });
 }
 
 function dbinsert(common, sql, values, start, end, count1, callback) {
-    console.log('getting records from ::: ' + start + ' to ' + end + ' and count = ' + count1);
+    //console.log('getting records from ::: ' + start + ' to ' + end + ' and count = ' + count1);
     var newValues = values.slice(start, end);
     con.query(sql, [newValues], function (err, result) {
         if (err) throw err;
-        console.log("Number of records inserted: " + result.affectedRows);
+        //console.log("Number of records inserted: " + result.affectedRows);
         if(end + 1 > count1)
         {
             callback(true);
