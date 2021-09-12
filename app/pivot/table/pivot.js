@@ -114,7 +114,7 @@ function databaseInsertion(common, callback) {
 
         var count1 = values.length;
         var start = 0;
-        var end = 50001;
+        var end = 10001;
         dbinsert(common, sql, values, start, end, count1, callback);
     
 }
@@ -134,7 +134,7 @@ function dbinsert(common, sql, values, start, end, count1, callback) {
         }
         else {
             start = end;
-            end = end + 50000;
+            end = end + 10000;
             //count1 = count1 - 1000;
             dbinsert(common, sql, values, start, end, count1, callback);
         }
