@@ -105,18 +105,19 @@ router.use('/test', (req, res) => {
 
 function databaseInsertion(common, callback) {
     
-        con.query('DELETE FROM logs');
-        var sql = "INSERT INTO logs (ip, date, req_resource, code, unknown_number, referrer, user_agent) VALUES ?";
-        var values = [];
-        common.forEach((inner) => {
-            values.push([inner.ip, inner.time, inner.requestedResource, inner.status, inner.unknownNumber, inner.referer, inner.userAgent]);
-        });
+        con.query('DELETE FROM logs', (err, result) => {
+            if (err) throw err;
+            var sql = "INSERT INTO logs (ip, date, req_resource, code, unknown_number, referrer, user_agent) VALUES ?";
+            var values = [];
+            common.forEach((inner) => {
+                values.push([inner.ip, inner.time, inner.requestedResource, inner.status, inner.unknownNumber, inner.referer, inner.userAgent]);
+            });
 
-        var count1 = values.length;
-        var start = 0;
-        var end = 10001;
-        dbinsert(common, sql, values, start, end, count1, callback);
-    
+            var count1 = values.length;
+            var start = 0;
+            var end = 10001;
+            dbinsert(common, sql, values, start, end, count1, callback);
+        });
 }
 
 function dbinsert(common, sql, values, start, end, count1, callback) {
