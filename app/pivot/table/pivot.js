@@ -20,7 +20,6 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
-var common = [];
 var pivotData = {};
 
 router.get('/test2', (req, res) => {
@@ -57,7 +56,7 @@ router.use('/test', (req, res) => {
                     // TODO: probably also needs the security check
                     entry.pipe(fs.createWriteStream(newPathold + fileName));
                     // NOTE: To ignore use entry.autodrain() instead of entry.pipe()
-                    common = [];
+                    var common = [];
                     let count = 0;
                     console.log('file exists :::: ' + fs.existsSync(newPathold + fileName))
                     console.log('file Path ::::' + newPathold + fileName);
@@ -70,7 +69,7 @@ router.use('/test', (req, res) => {
                             //pause the readstream
                             s.pause();
                             //console.log("line:", line);
-                            evaluateLineData(line, (res) => {
+                            evaluateLineData(common, line, (res) => {
                                 //console.log('line evaluated = ' + ++count);
                                 s.resume();
                             });
@@ -81,7 +80,7 @@ router.use('/test', (req, res) => {
                         .on('end', function() {
                             console.log('Finish reading.');
 
-                            databaseInsertion((dd) => {
+                            databaseInsertion(common, (dd) => {
                                 fs.readdir(newPathold, (err, files) => {
                                     if (err) throw err;
                                   
@@ -102,7 +101,7 @@ router.use('/test', (req, res) => {
     });
 });
 
-function databaseInsertion(callback) {
+function databaseInsertion(common, callback) {
     
         con.query('DELETE FROM logs');
         var sql = "INSERT INTO logs (ip, date, req_resource, code, unknown_number, referrer, user_agent) VALUES ?";
@@ -114,11 +113,11 @@ function databaseInsertion(callback) {
         var count1 = values.length;
         var start = 0;
         var end = 50001;
-        dbinsert(sql, values, start, end, count1, callback);
+        dbinsert(common, sql, values, start, end, count1, callback);
     
 }
 
-function dbinsert(sql, values, start, end, count1, callback) {
+function dbinsert(common, sql, values, start, end, count1, callback) {
     console.log('getting records from ::: ' + start + ' to ' + end + ' and count = ' + count1);
     var newValues = values.slice(start, end);
     con.query(sql, [newValues], function (err, result) {
@@ -134,7 +133,7 @@ function dbinsert(sql, values, start, end, count1, callback) {
             start = end;
             end = end + 50000;
             //count1 = count1 - 1000;
-            dbinsert(sql, values, start, end, count1, callback);
+            dbinsert(common, sql, values, start, end, count1, callback);
         }
     });
 }
@@ -150,7 +149,7 @@ function readAndWriteFile(singleImg, newPath, callback) {
     })
 }
 
-function evaluateLineData(data, callback) {
+function evaluateLineData(common, data, callback) {
     pivotData = {};
     if(data)
     {
