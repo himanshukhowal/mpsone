@@ -71,7 +71,7 @@ router.use('/test', (req, res) => {
                             s.pause();
                             //console.log("line:", line);
                             evaluateLineData(line, (res) => {
-                                console.log('line evaluated = ' + ++count);
+                                //console.log('line evaluated = ' + ++count);
                                 s.resume();
                             });
                         })
