@@ -90,6 +90,8 @@ router.use('/test', (req, res) => {
                                       });
                                     }
                                   });
+                                  common = [];
+                                  pivotData = {};
                                 console.log('done everything');
                             });
                         })
@@ -128,6 +130,7 @@ function dbinsert(common, sql, values, start, end, count1, callback) {
             callback(true);
             common = [];
             values = [];
+            newValues = null;
         }
         else {
             start = end;
